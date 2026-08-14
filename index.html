@@ -1,1 +1,61 @@
-<!-- NYC Tenant Compass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NYC Tenant Compass</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+ <header class="hero">
+  <div class="hero-content">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        🧭
+      </div>
+      
+      <div class="brand-text">
+        <h1>NYC Tenant <span>Compass</span></h1>
+        <p>Understand your building. Know your options. Find help.</p>
+      </div>
+    </div>
+    
+
+  </div>
+</header>
+
+  <main>
+    <section>
+      <h2>Check Your Building</h2>
+
+      <form id="tenant-search-form">
+        <label for="address">NYC Address</label>
+
+        <input
+          type="text"
+          id="address"
+          placeholder="Example: 123 Main Street, Bronx, NY"
+          required
+        >
+
+        <button type="submit">Check Address</button>
+      </form>
+    </section>
+
+    <section id="results">
+      <h2>Building Information</h2>
+      <p>Your results will appear here.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      NYC Tenant Compass provides general housing information and is not a substitute for legal advice.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
