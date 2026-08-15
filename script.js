@@ -117,7 +117,7 @@ const apartmentViolationsHTML = apartmentOpenViolations
     <div class="violation-item">
       <p><strong>Class:</strong> ${violation.class || "Not available"}</p>
       <p><strong>Violation:</strong> ${violation.novdescription || "Description not available"}</p>
-      <p><strong>Inspection Date:</strong> ${violation.inspectiondate || "Not available"}</p>
+     <p><strong>Inspection Date:</strong> ${violation.inspectiondate ? new Date(violation.inspectiondate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "Not available"}</p> 
       <p><strong>Status:</strong> ${violation.currentstatus || violation.violationstatus || "Not available"}</p>
     </div>
   `)
