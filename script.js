@@ -88,6 +88,8 @@ const hpdURL =
       }
       
       const building = hpdData[0];
+      console.log("HPD building:", building);
+      
       
       const boroughCodes = {
   MANHATTAN: "1",
@@ -118,6 +120,10 @@ const bbl =
         <p><strong>BBL:</strong> ${bbl}</p>
 
         <p><strong>ZIP Code:</strong> ${building.zip || "Not available"}</p>
+        <p><strong>Building Class:</strong> ${building.dobbuildingclass || "Not available"}</p>
+
+<p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
+        
       `;
       
     } catch (error) {
