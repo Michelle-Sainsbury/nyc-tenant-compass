@@ -123,6 +123,7 @@ const bbl =
         <p><strong>Building Class:</strong> ${building.dobbuildingclass || "Not available"}</p>
 
 <p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
+<p><strong>HPD Legal Apartments/Units:</strong> ${building.legalclassa || "Not available"}</p>
         
       `;
       
