@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#tenant-search-form");
   const addressInput = document.querySelector("#address");
+  const apartmentInput = document.querySelector("#apartment");
   const buildingInfo = document.querySelector("#results");
   
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     
     const address = addressInput.value.trim();
-    
+    const apartment = apartmentInput.value.trim();
     if (!address) {
       alert("Please enter an NYC address.");
       return;
@@ -89,8 +90,46 @@ const hpdURL =
       
       const building = hpdData[0];
       console.log("HPD building:", building);
-      
-      
+      console.log("HPD Building ID:", building.buildingid);
+   const violationsURL =
+  `https://data.cityofnewyork.us/resource/wvxf-dwi5.json?$where=buildingid=${building.buildingid}`;
+
+const violationsResponse = await fetch(violationsURL);
+const violationsData = await violationsResponse.json();
+
+console.log("HPD Violations:", violationsData);   
+const openViolations = violationsData.filter(
+  violation => violation.violationstatus === "Open"
+);
+
+console.log("Open HPD Violations:", openViolations);
+const apartmentOpenViolations = apartment ?
+  openViolations.filter(
+    violation =>
+    violation.apartment &&
+    violation.apartment.trim().toUpperCase() === apartment.toUpperCase()
+  ) :
+  [];
+
+console.log("Apartment Open Violations:", apartmentOpenViolations);
+const apartmentViolationsHTML = apartmentOpenViolations
+  .map(violation => `
+    <div class="violation-item">
+      <p><strong>Class:</strong> ${violation.class || "Not available"}</p>
+      <p><strong>Violation:</strong> ${violation.novdescription || "Description not available"}</p>
+      <p><strong>Inspection Date:</strong> ${violation.inspectiondate || "Not available"}</p>
+      <p><strong>Status:</strong> ${violation.currentstatus || violation.violationstatus || "Not available"}</p>
+    </div>
+  `)
+  .join("");
+console.log(
+  "All violations for entered apartment:",
+  violationsData.filter(
+    violation =>
+    violation.apartment &&
+    violation.apartment.trim().toUpperCase() === apartment.toUpperCase()
+  )
+);
       const boroughCodes = {
   MANHATTAN: "1",
   BRONX: "2",
@@ -124,7 +163,26 @@ const bbl =
 
 <p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
 <p><strong>HPD Legal Apartments/Units:</strong> ${building.legalclassa || "Not available"}</p>
-        
+  <h3>HPD Violations</h3>
+
+<p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
+<p><strong>Total HPD Violation Records:</strong> ${violationsData.length}</p>
+
+${apartment ? `
+  <h3>Apartment ${apartment}</h3>
+  <p><strong>Open Apartment Violations:</strong> ${apartmentOpenViolations.length}</p>
+  ${apartmentOpenViolations.length > 0
+  ? apartmentViolationsHTML
+  : "<p>No open HPD violations were found for this apartment.</p>"
+}
+  <p><strong>Total Apartment Violation Records:</strong> ${
+    violationsData.filter(
+      violation =>
+        violation.apartment &&
+        violation.apartment.trim().toUpperCase() === apartment.toUpperCase()
+    ).length
+  }</p>
+` : ""}   
       `;
       
     } catch (error) {
