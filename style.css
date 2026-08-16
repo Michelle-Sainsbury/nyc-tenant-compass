@@ -236,3 +236,7 @@ footer {
     padding: 24px 20px;
   }
 }
+.violation-item {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}

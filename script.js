@@ -110,8 +110,29 @@ const apartmentOpenViolations = apartment ?
     violation.apartment.trim().toUpperCase() === apartment.toUpperCase()
   ) :
   [];
-
+const classACount = apartmentOpenViolations.filter(violation => violation.class === "A").length;
+const classBCount = apartmentOpenViolations.filter(violation => violation.class === "B").length;
+const classCCount = apartmentOpenViolations.filter(violation => violation.class === "C").length;
 console.log("Apartment Open Violations:", apartmentOpenViolations);
+const uniqueStatuses = [
+  ...new Set(
+    apartmentOpenViolations.map(
+      violation => violation.currentstatus || violation.violationstatus
+    )
+  )
+];
+
+console.log("Unique HPD Statuses:", uniqueStatuses);
+const getStatusExplanation = (status) => {
+  if (status === "NOTICE OF ISSUANCE SENT TO TENANT") {
+  return "HPD sent the tenant a notice that the violation was issued.";
+}
+  if (status === "NOV SENT OUT") {
+    return "HPD sent a Notice of Violation.";
+  }
+  
+  return "";
+};
 const apartmentViolationsHTML = apartmentOpenViolations
   .map(violation => `
     <div class="violation-item">
@@ -119,6 +140,7 @@ const apartmentViolationsHTML = apartmentOpenViolations
       <p><strong>Violation:</strong> ${violation.novdescription || "Description not available"}</p>
      <p><strong>Inspection Date:</strong> ${violation.inspectiondate ? new Date(violation.inspectiondate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "Not available"}</p> 
       <p><strong>Status:</strong> ${violation.currentstatus || violation.violationstatus || "Not available"}</p>
+      ${getStatusExplanation(violation.currentstatus || violation.violationstatus) ? `<p><strong>What this means:</strong> ${getStatusExplanation(violation.currentstatus || violation.violationstatus)}</p>` : ""}
     </div>
   `)
   .join("");
@@ -171,6 +193,9 @@ const bbl =
 ${apartment ? `
   <h3>Apartment ${apartment}</h3>
   <p><strong>Open Apartment Violations:</strong> ${apartmentOpenViolations.length}</p>
+  <p><strong>Class A — Non-hazardous:</strong> ${classACount}</p>
+<p><strong>Class B — Hazardous:</strong> ${classBCount}</p>
+<p><strong>Class C — Immediately hazardous:</strong> ${classCCount}</p>
   ${apartmentOpenViolations.length > 0
   ? apartmentViolationsHTML
   : "<p>No open HPD violations were found for this apartment.</p>"
