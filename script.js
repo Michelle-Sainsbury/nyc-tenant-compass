@@ -193,6 +193,8 @@ ${apartment ? `
 <p><strong>Legal assistance:</strong> <a href="https://www.legalservicesnyc.org/get-help-with-a-legal-issue/" target="_blank">Legal Services NYC</a> provides free legal assistance for eligible New Yorkers with housing and tenant-rights issues. Call <strong>917-661-4500</strong>, Monday–Friday, 9:30 a.m.–4:00 p.m. Multilingual intake is available.</p>
 <p><strong>Legal assistance:</strong> <a href="https://legalaidnyc.org/get-help/housing-problems/" target="_blank">The Legal Aid Society</a> provides free legal assistance for eligible New Yorkers facing eviction, Housing Court cases, landlord-tenant disputes, and other housing-related problems.</p>
 <p><strong>Legal assistance:</strong> <a href="https://mobilizationforjustice.org/projects/housing/" target="_blank">Mobilization for Justice</a> provides free legal assistance to eligible New Yorkers with eviction, Housing Court, repairs, landlord harassment, and other tenant-related matters.</p>
+<h3>Rent Stabilization Information</h3><p>NYC Tenant Compass does not currently determine whether an individual apartment is rent stabilized. Rent stabilization status should be verified using official New York State housing records.</p>
+<p><strong>Verify your status:</strong> You can request your apartment's official rent history from New York State Division of Housing and Community Renewal (DHCR/HCR) to help verify its rent-regulation history.</p>
       `;
       
     } catch (error) {
