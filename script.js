@@ -118,6 +118,28 @@ complaintsData.forEach(complaint => {
   complaintTypeCounts[type] = (complaintTypeCounts[type] || 0) + 1;
 });
 
+const housingComplaintTypes = [
+  "HEAT/HOT WATER",
+  "PLUMBING",
+  "WATER LEAK",
+  "PAINT/PLASTER",
+  "UNSANITARY CONDITION",
+  "ELECTRIC",
+  "DOOR/WINDOW",
+  "APPLIANCE",
+  "FLOORING/STAIRS",
+  "WATER SYSTEM"
+];
+const housingComplaintCounts = {};
+const otherComplaintCounts = {};
+
+Object.entries(complaintTypeCounts).forEach(([type, count]) => {
+  if (housingComplaintTypes.includes(type.toUpperCase())) {
+    housingComplaintCounts[type] = count;
+  } else {
+    otherComplaintCounts[type] = count;
+  }
+});
 console.log("311 Complaint Types:", complaintTypeCounts);
 
 console.log("HPD Violations:", violationsData);   
@@ -209,12 +231,17 @@ const bbl =
 <p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
 <p><strong>HPD Legal Apartments/Units:</strong> ${building.legalclassa || "Not available"}</p>
 <h3>311 Building Complaint History</h3>
-<p><strong>Building-wide data:</strong> These 311 complaints are associated with this building address and may have been submitted by residents of any apartment. They do not necessarily relate to Apartment ${apartment || "N/A"}.</p>
+<p><strong>Building-wide data:</strong> These 311 complaints are associated with this building address and may have been submitted by residents of any apartment.${apartment ? ` They do not necessarily relate to Apartment ${apartment}.` : ""}</p>
 <p><strong>Total 311 Complaints for This Building:</strong> ${complaintCountData[0]?.total || 0}</p>
-<p><strong>Complaint Types in 100 Retrieved Records:</strong></p>
-<p>${Object.entries(complaintTypeCounts)
+<h3>Housing / Building Complaints</h3>
+<p>${Object.entries(housingComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
-  .join("<br>")}</p>
+  .join("<br>") || "No housing-related complaints found in the 100 retrieved records."}</p>
+
+<h3>Other 311 Activity at or Near This Address</h3>
+<p>${Object.entries(otherComplaintCounts)
+  .map(([type, count]) => `${type}: ${count}`)
+  .join("<br>") || "No other 311 activity found in the 100 retrieved records."}</p>
 <h3>HPD Violations</h3>
 
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
