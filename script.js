@@ -98,7 +98,7 @@ const violationsResponse = await fetch(violationsURL);
 const violationsData = await violationsResponse.json();
 
 const complaintsURL =
-  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
+`https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100&$order=created_date DESC&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
   
   const complaintsResponse = await fetch(complaintsURL);
 const complaintsData = await complaintsResponse.json();
@@ -233,12 +233,12 @@ const bbl =
 <h3>311 Building Complaint History</h3>
 <p><strong>Building-wide data:</strong> These 311 complaints are associated with this building address and may have been submitted by residents of any apartment.${apartment ? ` They do not necessarily relate to Apartment ${apartment}.` : ""}</p>
 <p><strong>Total 311 Complaints for This Building:</strong> ${complaintCountData[0]?.total || 0}</p>
-<h3>Housing / Building Complaints</h3>
+<h3>Housing / Building Complaints — 100 Most Recent 311 Records</h3>
 <p>${Object.entries(housingComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No housing-related complaints found in the 100 retrieved records."}</p>
 
-<h3>Other 311 Activity at or Near This Address</h3>
+<h3>Other 311 Activity at or Near This Address — 100 Most Recent 311 Records</h3>
 <p>${Object.entries(otherComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No other 311 activity found in the 100 retrieved records."}</p>
