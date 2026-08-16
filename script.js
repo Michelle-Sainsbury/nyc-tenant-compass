@@ -183,6 +183,9 @@ ${apartment ? `
     ).length
   }</p>
 ` : ""}   
+<h3>What This Means</h3>
+<p>These results reflect violations found in NYC HPD records. They may not include repair conditions that have not been reported to 311 and inspected by HPD.</p>
+<p>If you have repair conditions that do not appear here, consider reporting them through NYC 311 so HPD can determine whether an inspection is appropriate.</p>
       `;
       
     } catch (error) {
