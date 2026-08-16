@@ -190,6 +190,8 @@ ${apartment ? `
 <p><strong>Class A — Non-hazardous:</strong> Conditions that generally require correction within 90 days.</p>
 <p><strong>Class B — Hazardous:</strong> Conditions that generally require correction within 30 days.</p>
 <p><strong>Class C — Immediately hazardous:</strong> The most serious violations and generally require rapid correction. Some Class C conditions have shorter legally required correction periods.</p>
+<h3>About Violation Status</h3> 
+<p> An HPD violation shown as open does not necessarily mean the condition currently exists. A condition may have been repaired but remain open in HPD records until the violation is properly certified or otherwise closed by HPD. </p>
 <h3>What Can I Do Next?</h3>
 <p><strong>Report unresolved repairs:</strong> If your landlord has not corrected a repair condition, you can report it through <a href="https://portal.311.nyc.gov/" target="_blank">NYC 311</a>.</p>
 <p><strong>Track your complaint:</strong> Save your 311 Service Request number and use <a href="https://portal.311.nyc.gov/check-status/" target="_blank">NYC 311 Service Request Status</a> to check for updates.</p>
