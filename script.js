@@ -97,6 +97,29 @@ const hpdURL =
 const violationsResponse = await fetch(violationsURL);
 const violationsData = await violationsResponse.json();
 
+const complaintsURL =
+  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
+  
+  const complaintsResponse = await fetch(complaintsURL);
+const complaintsData = await complaintsResponse.json();
+
+console.log("311 Complaints:", complaintsData);
+const complaintCountURL =
+  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=count(*)%20as%20total&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
+
+const complaintCountResponse = await fetch(complaintCountURL);
+const complaintCountData = await complaintCountResponse.json();
+
+console.log("Total 311 Complaints:", complaintCountData);
+const complaintTypeCounts = {};
+
+complaintsData.forEach(complaint => {
+  const type = complaint.complaint_type || "Other";
+  complaintTypeCounts[type] = (complaintTypeCounts[type] || 0) + 1;
+});
+
+console.log("311 Complaint Types:", complaintTypeCounts);
+
 console.log("HPD Violations:", violationsData);   
 const openViolations = violationsData.filter(
   violation => violation.violationstatus === "Open"
@@ -185,7 +208,14 @@ const bbl =
 
 <p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
 <p><strong>HPD Legal Apartments/Units:</strong> ${building.legalclassa || "Not available"}</p>
-  <h3>HPD Violations</h3>
+<h3>311 Building Complaint History</h3>
+<p><strong>Building-wide data:</strong> These 311 complaints are associated with this building address and may have been submitted by residents of any apartment. They do not necessarily relate to Apartment ${apartment || "N/A"}.</p>
+<p><strong>Total 311 Complaints for This Building:</strong> ${complaintCountData[0]?.total || 0}</p>
+<p><strong>Complaint Types in 100 Retrieved Records:</strong></p>
+<p>${Object.entries(complaintTypeCounts)
+  .map(([type, count]) => `${type}: ${count}`)
+  .join("<br>")}</p>
+<h3>HPD Violations</h3>
 
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
 <p><strong>Total HPD Violation Records:</strong> ${violationsData.length}</p>
