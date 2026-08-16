@@ -115,7 +115,7 @@ console.log("Apartment Open Violations:", apartmentOpenViolations);
 const apartmentViolationsHTML = apartmentOpenViolations
   .map(violation => `
     <div class="violation-item">
-      <p><strong>Class:</strong> ${violation.class || "Not available"}</p>
+   <p><strong>Class: ${violation.class || "Not available"} — ${violation.class === "A" ? "Non-hazardous" : violation.class === "B" ? "Hazardous" : violation.class === "C" ? "Immediately hazardous" : "Classification unavailable"}</strong></p>
       <p><strong>Violation:</strong> ${violation.novdescription || "Description not available"}</p>
      <p><strong>Inspection Date:</strong> ${violation.inspectiondate ? new Date(violation.inspectiondate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "Not available"}</p> 
       <p><strong>Status:</strong> ${violation.currentstatus || violation.violationstatus || "Not available"}</p>
