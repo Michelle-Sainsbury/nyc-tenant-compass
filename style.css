@@ -240,3 +240,19 @@ footer {
   margin-top: 18px;
   margin-bottom: 18px;
 }
+.ownership-card {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding: 18px;
+  border: 1px solid #d9dee5;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.ownership-card h3 {
+  margin-top: 0;
+}
+
+.ownership-card p:last-child {
+  margin-bottom: 0;
+}

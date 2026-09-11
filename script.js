@@ -112,7 +112,18 @@ if (verifiedRegistration) {
   const registrationContactsResponse = await fetch(registrationContactsURL);
   registrationContactsData = await registrationContactsResponse.json();
 }
-const ownerManagementHTML = registrationContactsData.map(contact => {
+const selectedContacts = registrationContactsData.filter(contact =>
+  ["CorporateOwner", "Agent", "SiteManager"].includes(contact.type)
+);
+
+const ownerManagementHTML = selectedContacts.map(contact => {
+  const label =
+    contact.type === "CorporateOwner"
+      ? "Corporate Owner"
+      : contact.type === "Agent"
+      ? "Managing Agent"
+      : "Site Manager (HPD record)";
+
   const name =
     contact.corporationname ||
     [contact.firstname, contact.middleinitial, contact.lastname]
@@ -130,7 +141,7 @@ const ownerManagementHTML = registrationContactsData.map(contact => {
     .filter(Boolean)
     .join(" ");
 
-  return `${contact.type || "Unknown Type"}: ${name || "Name not listed"}${address ? `<br>Business Address: ${address}` : ""}`;
+  return `<strong>${label}:</strong> ${name || "Name not listed"}${address ? `<br><strong>Business Address:</strong> ${address}` : ""}`;
 }).join("<br><br>");
    const violationsURL =
   `https://data.cityofnewyork.us/resource/wvxf-dwi5.json?$where=buildingid=${building.buildingid}`;
@@ -285,8 +296,14 @@ const bbl =
 <p>${Object.entries(otherComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No additional area activity found in the 100 retrieved records."}</p>
-<h3>Temporary Ownership & Management Check</h3>
+<div class="ownership-card">
+<h3>Building Ownership & Management</h3>
 <p>${ownerManagementHTML || "No registration contacts found."}</p>
+<p><strong>Source:</strong> NYC HPD Registration Records</p>
+<p>Registration information may be outdated if the property owner or managing agent has not filed updated information with HPD.</p>
+
+<p><a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener noreferrer">Verify this information on HPD Online</a></p>
+</div>
 <h3>HPD Violations</h3>
 
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
