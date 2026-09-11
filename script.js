@@ -91,6 +91,47 @@ const hpdURL =
       const building = hpdData[0];
       console.log("HPD building:", building);
       console.log("HPD Building ID:", building.buildingid);
+      console.log("HPD Registration ID:", building.registrationid);
+      let registrationContactsData = [];
+
+const registrationsURL =
+  `https://data.cityofnewyork.us/resource/tesw-yqqr.json?registrationid=${building.registrationid}`;
+
+const registrationsResponse = await fetch(registrationsURL);
+const registrationsData = await registrationsResponse.json();
+
+const verifiedRegistration = registrationsData.find(registration =>
+  String(registration.block) === String(building.block) &&
+  String(registration.lot) === String(building.lot)
+);
+
+if (verifiedRegistration) {
+  const registrationContactsURL =
+    `https://data.cityofnewyork.us/resource/feu5-w2e2.json?registrationid=${verifiedRegistration.registrationid}`;
+  
+  const registrationContactsResponse = await fetch(registrationContactsURL);
+  registrationContactsData = await registrationContactsResponse.json();
+}
+const ownerManagementHTML = registrationContactsData.map(contact => {
+  const name =
+    contact.corporationname ||
+    [contact.firstname, contact.middleinitial, contact.lastname]
+      .filter(Boolean)
+      .join(" ");
+
+  const address = [
+    contact.businesshousenumber,
+    contact.businessstreetname,
+    contact.businessapartment,
+    contact.businesscity,
+    contact.businessstate,
+    contact.businesszip
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return `${contact.type || "Unknown Type"}: ${name || "Name not listed"}${address ? `<br>Business Address: ${address}` : ""}`;
+}).join("<br><br>");
    const violationsURL =
   `https://data.cityofnewyork.us/resource/wvxf-dwi5.json?$where=buildingid=${building.buildingid}`;
 
@@ -244,7 +285,8 @@ const bbl =
 <p>${Object.entries(otherComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No additional area activity found in the 100 retrieved records."}</p>
-
+<h3>Temporary Ownership & Management Check</h3>
+<p>${ownerManagementHTML || "No registration contacts found."}</p>
 <h3>HPD Violations</h3>
 
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
