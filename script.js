@@ -97,8 +97,39 @@ const hpdURL =
 const registrationsURL =
   `https://data.cityofnewyork.us/resource/tesw-yqqr.json?registrationid=${building.registrationid}`;
 
-const registrationsResponse = await fetch(registrationsURL);
-const registrationsData = await registrationsResponse.json();
+const registrationsPromise = fetch(registrationsURL);
+let registrationsData = [];
+
+
+   const violationsURL =
+  `https://data.cityofnewyork.us/resource/wvxf-dwi5.json?$where=buildingid=${building.buildingid}`;
+
+const complaintsURL =
+  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100&$order=created_date DESC&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
+
+const complaintCountURL =
+  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=count(*)%20as%20total&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
+
+const [
+  violationsResponse,
+  complaintsResponse,
+  complaintCountResponse
+] = await Promise.all([
+  fetch(violationsURL),
+  fetch(complaintsURL),
+  fetch(complaintCountURL)
+]);
+
+const [
+  violationsData,
+  complaintsData,
+  complaintCountData
+] = await Promise.all([
+  violationsResponse.json(),
+  complaintsResponse.json(),
+  complaintCountResponse.json()
+]);
+registrationsData = await (await registrationsPromise).json();
 
 const verifiedRegistration = registrationsData.find(registration =>
   String(registration.block) === String(building.block) &&
@@ -108,10 +139,11 @@ const verifiedRegistration = registrationsData.find(registration =>
 if (verifiedRegistration) {
   const registrationContactsURL =
     `https://data.cityofnewyork.us/resource/feu5-w2e2.json?registrationid=${verifiedRegistration.registrationid}`;
-  
+
   const registrationContactsResponse = await fetch(registrationContactsURL);
   registrationContactsData = await registrationContactsResponse.json();
 }
+
 const selectedContacts = registrationContactsData.filter(contact =>
   ["CorporateOwner", "Agent", "SiteManager"].includes(contact.type)
 );
@@ -143,26 +175,6 @@ const ownerManagementHTML = selectedContacts.map(contact => {
 
   return `<strong>${label}:</strong> ${name || "Name not listed"}${address ? `<br><strong>Business Address:</strong> ${address}` : ""}`;
 }).join("<br><br>");
-   const violationsURL =
-  `https://data.cityofnewyork.us/resource/wvxf-dwi5.json?$where=buildingid=${building.buildingid}`;
-
-const violationsResponse = await fetch(violationsURL);
-const violationsData = await violationsResponse.json();
-
-const complaintsURL =
-`https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100&$order=created_date DESC&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
-  
-  const complaintsResponse = await fetch(complaintsURL);
-const complaintsData = await complaintsResponse.json();
-
-console.log("311 Complaints:", complaintsData);
-
-const complaintCountURL =
-  `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=count(*)%20as%20total&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
-
-const complaintCountResponse = await fetch(complaintCountURL);
-const complaintCountData = await complaintCountResponse.json();
-
 console.log("Total 311 Complaints:", complaintCountData);
 const complaintTypeCounts = {};
 
