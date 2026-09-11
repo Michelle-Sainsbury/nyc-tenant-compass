@@ -104,6 +104,7 @@ const complaintsURL =
 const complaintsData = await complaintsResponse.json();
 
 console.log("311 Complaints:", complaintsData);
+
 const complaintCountURL =
   `https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=count(*)%20as%20total&incident_address=${encodeURIComponent(building.housenumber + " " + building.streetname)}&borough=${encodeURIComponent(building.boro)}`;
 
@@ -238,10 +239,12 @@ const bbl =
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No housing-related complaints found in the 100 retrieved records."}</p>
 
-<h3>Other 311 Activity at or Near This Address — 100 Most Recent 311 Records</h3>
+<h3>Additional Area Context</h3>
+<p><strong>Note:</strong> These 311 reports may relate to the surrounding area and do not necessarily describe conditions in this building.</p>
 <p>${Object.entries(otherComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
-  .join("<br>") || "No other 311 activity found in the 100 retrieved records."}</p>
+  .join("<br>") || "No additional area activity found in the 100 retrieved records."}</p>
+
 <h3>HPD Violations</h3>
 
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
