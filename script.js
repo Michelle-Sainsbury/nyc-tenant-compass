@@ -303,6 +303,7 @@ const bbl =
 
 <p><strong>Legal Stories:</strong> ${building.legalstories || "Not available"}</p>
 <p><strong>HPD Legal Apartments/Units:</strong> ${building.legalclassa || "Not available"}</p>
+<div class="complaints-section">
 <h3>311 Building Complaint History</h3>
 <p><strong>Building-wide data:</strong> These 311 complaints are associated with this building address and may have been submitted by residents of any apartment.${apartment ? ` They do not necessarily relate to Apartment ${apartment}.` : ""}</p>
 <p><strong>Total 311 Complaints for This Building:</strong> ${complaintCountData[0]?.total || 0}</p>
@@ -316,6 +317,7 @@ const bbl =
 <p>${Object.entries(otherComplaintCounts)
   .map(([type, count]) => `${type}: ${count}`)
   .join("<br>") || "No additional area activity found in the 100 retrieved records."}</p>
+</div>
 <div class="ownership-card">
 <h3>Building Ownership & Management</h3>
 <p>${ownerManagementHTML || "No registration contacts found."}</p>
@@ -324,8 +326,8 @@ const bbl =
 
 <p><a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener noreferrer">Verify this information on HPD Online</a></p>
 </div>
+<div class="hpd-card">
 <h3>HPD Violations</h3>
-
 <p><strong>Open Building-Wide Violations:</strong> ${openViolations.length}</p>
 <p><strong>Total HPD Violation Records:</strong> ${violationsData.length}</p>
 
@@ -362,6 +364,7 @@ ${apartment ? `
 <p><strong>Get housing help:</strong> If repair problems remain unresolved, <a href="https://housingcourtanswers.org/" target="_blank">Housing Court Answers</a> provides information about tenant rights, Housing Court procedures, HP Actions for repairs, and referrals for legal assistance.</p>
 <p><strong>Legal assistance:</strong> <a href="https://legalaidnyc.org/get-help/housing-problems/" target="_blank">The Legal Aid Society</a> provides free legal assistance for eligible New Yorkers facing eviction, Housing Court cases, landlord-tenant disputes, and other housing-related problems.</p>
 <p><strong>Legal assistance:</strong> <a href="https://mobilizationforjustice.org/projects/housing/" target="_blank">Mobilization for Justice</a> provides free legal assistance to eligible New Yorkers with eviction, Housing Court, repairs, landlord harassment, and other tenant-related matters.</p>
+</div>
 <h3>Rent Stabilization Information</h3><p>NYC Tenant Compass does not currently determine whether an individual apartment is rent stabilized. Rent stabilization status should be verified using official New York State housing records.</p>
 <p><strong>Verify your status:</strong> You can <a href="https://hcr.ny.gov/most-common-rent-regulation-issues-tenants" target="_blank">request your apartment's official rent history</a> from the New York State Division of Housing and Community Renewal (DHCR) to help verify its rent-regulation history.</p>
       `;

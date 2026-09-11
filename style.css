@@ -256,3 +256,32 @@ footer {
 .ownership-card p:last-child {
   margin-bottom: 0;
 }
+.hpd-card {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding: 18px;
+  border: 1px solid #d9dee5;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.hpd-card h3:first-child {
+  margin-top: 0;
+}
+
+.hpd-card p:last-child {
+  margin-bottom: 0;
+}
+.complaints-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-top: 16px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.complaints-section h3:first-child {
+  margin-top: 0;
+}
+.hpd-card+h3 {
+  margin-top: 28px;
+}
