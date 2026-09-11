@@ -44,11 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const property = geoData.features[0].properties;
       const enteredHouseNumber = address.match(/^\d+/)?.[0];
 const returnedHouseNumber = property.housenumber;
-
+const enteredStreetName = address.split(",")[0].replace(/^\S+\s+/, "").trim().toUpperCase();
+const returnedStreetName = (property.street || "").trim().toUpperCase();
 if (
-  enteredHouseNumber &&
-  returnedHouseNumber &&
-  enteredHouseNumber !== returnedHouseNumber
+  (
+    enteredHouseNumber &&
+    returnedHouseNumber &&
+    enteredHouseNumber !== returnedHouseNumber
+  ) ||
+  (
+    enteredStreetName &&
+    returnedStreetName &&
+    enteredStreetName !== returnedStreetName
+  )
 ) {
   buildingInfo.innerHTML = `
     <h2>Building Information</h2>
